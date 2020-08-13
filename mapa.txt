@@ -1,0 +1,41 @@
+--DDL
+CREATE TABLE PLACEHOLDER (numero serial PRIMARY KEY,nome varchar(80),localizacao varchar(100));
+ALTER TABLE PLACEHOLDER ADD telefone int;
+DROP TABLE PLACEHOLDER;
+						  
+--DML
+INSERT into PROJETO values (44, 'Montagem', 'Serra');						  
+update PROJETO set nome = 'Maquinario' where localizacao = 'Serra';
+delete from PROJETO where nome = 'Montagem';
+						  
+--DQL
+select * from EMPREGADO;
+						  
+--Junções  
+select * from DEPARTAMENTO_PROJETO as DEP full outer join PROJETO as PRO on DEP.numero_projeto = PRO.numero;						  
+select PRO.rg_empregado, PRO.horas from EMPREGADO_PROJETO as PRO left outer join EMPREGADO as EMP on (EMP.rg = PRO.rg_empregado);						  
+select PRO.rg_empregado, PRO.horas from EMPREGADO_PROJETO as PRO right outer join EMPREGADO as EMP on (PRO.rg_empregado  =  EMP.rg);
+select DEP.numero_projeto, PRO.nome from DEPARTAMENTO_PROJETO as DEP inner join PROJETO as PRO on (DEP.numero_projeto = PRO.numero);						  
+						  
+--Paginação
+select * from PROJETO where localizacao = 'Serra';						  
+select numero, count(*) from PROJETO group by numero;						  
+select * from PROJETO order by localizacao;
+select * from PROJETO limit 1;						  
+
+--Operações de conjuntos						  
+(select rg_empregado, horas from EMPREGADO_PROJETO where (horas >= 2 and horas < 10)) INTERSECT (select rg_empregado, horas from EMPREGADO_PROJETO where (horas > 5));						  
+(select numero from PROJETO where localizacao = 'Serra' ) UNION (select numero from PROJETO where localizacao = 'Vitoria');						  
+(select rg_empregado, horas from EMPREGADO_PROJETO where (horas >= 2 and horas < 10)) EXCEPT(select rg_empregado, horas from EMPREGADO_PROJETO where (horas > 5));
+
+--Combinando Instruções
+select EMPREGADO.nome as nome_empregado, PROJETO.nome as nome_projeto from EMPREGADO_PROJETO inner join PROJETO on (PROJETO.numero = EMPREGADO_PROJETO.numero_projeto) left join EMPREGADO on (EMPREGADO.rg = EMPREGADO_PROJETO.rg_empregado) where rg < 4040 group by  nome_empregado, nome_projeto order by nome_empregado asc limit 4;						  
+						  
+						  
+select * from PROJETO;						  
+						
+						  
+						  
+						  
+						  
+						  
